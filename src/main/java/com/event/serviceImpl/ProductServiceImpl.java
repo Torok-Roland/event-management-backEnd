@@ -77,6 +77,7 @@ public class ProductServiceImpl implements ProductService {
         product.setDescription(requestMap.get("description"));
         product.setLocation(requestMap.get("location"));
         product.setPrice(Integer.parseInt(requestMap.get("price")));
+        product.setImgUrl(requestMap.get("imgUrl"));
         return product;
 
     }

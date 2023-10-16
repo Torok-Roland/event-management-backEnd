@@ -1,9 +1,7 @@
 package com.event.service;
 
 import com.event.wrapper.ProductWrapper;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
