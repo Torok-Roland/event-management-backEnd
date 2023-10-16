@@ -5,7 +5,6 @@ import com.event.rest.ProductRest;
 import com.event.service.ProductService;
 import com.event.utils.EventUtils;
 import com.event.wrapper.ProductWrapper;
-import jdk.jfr.Event;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;

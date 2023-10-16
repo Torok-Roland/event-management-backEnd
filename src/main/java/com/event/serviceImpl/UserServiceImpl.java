@@ -123,39 +123,6 @@ public class UserServiceImpl implements UserService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
-//    @Override
-//    public ResponseEntity<String> update(Map<String, String> requestMap) {
-//        try {
-//            if (jwtFilter.isAdmin()) {
-//                Optional<User> optional = userDao.findById(Integer.parseInt(requestMap.get("id")));
-//                if (!optional.isEmpty()) {
-//                    userDao.updateStatus(requestMap.get("status"), Integer.parseInt(requestMap.get("id")));
-//                    sendMailToAllAdmin(requestMap.get("status"), optional.get().getEmail(), userDao.getAllAdmin());
-//                    return EventUtils.getResponseEntity("User Status Updated Successfully", HttpStatus.OK);
-//                } else {
-//                   return EventUtils.getResponseEntity("User id doesn't not exist", HttpStatus.OK);
-//                }
-//            } else {
-//                return EventUtils.getResponseEntity(EventConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
-//            }
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//        return EventUtils.getResponseEntity(EventConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
-
-    //    private void sendMailToAllAdmin(String status, String user, List<String> allAdmin) {
-//        allAdmin.remove(jwtFilter.getCurrentUser());
-//        if (status != null && status.equalsIgnoreCase("true")) {
-//            emailUtils.sendSimpleMessage(jwtFilter.getCurrentUser(), "Account Approved", "USER:-" + user + "\n" +
-//                    "is approved by \n Admin:-" + jwtFilter.getCurrentUser(), allAdmin);
-//        } else {
-//            emailUtils.sendSimpleMessage(jwtFilter.getCurrentUser(), "Account Disabled", "USER:-" + user + "\n" +
-//                    "is disabled by \n Admin:-" + jwtFilter.getCurrentUser(), allAdmin);
-//        }
-//    }
-
     @Override
     public ResponseEntity<String> checkToken() {
         return EventUtils.getResponseEntity("true", HttpStatus.OK);
@@ -175,6 +142,26 @@ public class UserServiceImpl implements UserService {
             }
             return EventUtils.getResponseEntity(EventConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return EventUtils.getResponseEntity(EventConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> deleteAccount(Integer id) {
+        try{
+            if (jwtFilter.isAdmin()) {
+                Optional optional = userDao.findById(id);
+                if (!optional.isEmpty()) {
+                    userDao.deleteById(id);
+                    return EventUtils.getResponseEntity("Admin allowed to delete user", HttpStatus.OK);
+                } else {
+                    return EventUtils.getResponseEntity("User id does not exist!", HttpStatus.OK);
+                }
+            } else {
+                    return EventUtils.getResponseEntity(EventConstants.UNAUTHORIZED_ACCESS,HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception ex){
             ex.printStackTrace();
         }
         return EventUtils.getResponseEntity(EventConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);

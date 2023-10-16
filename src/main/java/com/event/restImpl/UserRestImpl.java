@@ -83,6 +83,16 @@ public class UserRestImpl implements UserRest {
         return EventUtils.getResponseEntity(EventConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @Override
+    public ResponseEntity<String> deleteAccount(Integer id) {
+        try{
+            return userService.deleteAccount(id);
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return EventUtils.getResponseEntity(EventConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 //    @Override
 //    public ResponseEntity<String> forgotPassword(Map<String, String> requestMap) {
 //        try{

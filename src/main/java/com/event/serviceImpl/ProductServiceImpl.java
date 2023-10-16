@@ -8,11 +8,12 @@ import com.event.model.Product;
 import com.event.service.ProductService;
 import com.event.utils.EventUtils;
 import com.event.wrapper.ProductWrapper;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -73,11 +74,9 @@ public class ProductServiceImpl implements ProductService {
         }
         product.setCategory(category);
         product.setName(requestMap.get("name"));
-        product.setStartDate(LocalDateTime.parse(requestMap.get("startDate")));
-        product.setEndDate(LocalDateTime.parse(requestMap.get("endDate")));
         product.setDescription(requestMap.get("description"));
         product.setLocation(requestMap.get("location"));
-        product.setImgUrl(requestMap.get("imgUrl"));
+        product.setPrice(Integer.parseInt(requestMap.get("price")));
         return product;
 
     }
@@ -137,7 +136,8 @@ public class ProductServiceImpl implements ProductService {
         }
         return EventUtils.getResponseEntity(EventConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
+    @Modifying
+    @Transactional
     @Override
     public ResponseEntity<String> updateStatus(Map<String, String> requestMap) {
         try {
@@ -177,4 +177,6 @@ public class ProductServiceImpl implements ProductService {
         }
         return new ResponseEntity<>(new ProductWrapper(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
 }
